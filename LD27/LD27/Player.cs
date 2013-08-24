@@ -62,14 +62,13 @@ namespace LD27
             }
             if (!CollisionHandler.IsVerticalCollision(new Rectangle((int)this.X - 5, (int)this.Y - 10, 10, 20), CurrentLevel.LevelObstacles))
             {
-                this.Position.Y += velocity.Y * acceleration.Y * (float)theGameTime.TotalSeconds;
+                this.Position.Y += velocity.Y * -45f * (float)theGameTime.TotalSeconds;
             }
         }
 
         private void accelerometer_CurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)
         {
             acceleration.X = e.SensorReading.Acceleration.X * 175;
-            acceleration.Y = e.SensorReading.Acceleration.Z * 50;
         }
 
         public void Draw(SpriteBatch theSpriteBatch)

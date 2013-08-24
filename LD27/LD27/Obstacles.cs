@@ -69,6 +69,34 @@ namespace LD27
                     new Obstacle(new Vector2(288, 640)),
                 };
             }
+            else if (level == 4)
+            {
+                return new List<Obstacle>(){
+                    new Obstacle(new Vector2(-128, 64)),
+                    new Obstacle(new Vector2(96, 64)),
+                    new Obstacle(new Vector2(192, 64)),
+                    new Obstacle(new Vector2(416, 64)),
+                    new Obstacle(new Vector2(0, 128)),
+                    new Obstacle(new Vector2(288, 128)),
+                    new Obstacle(new Vector2(64, 224)),
+                    new Obstacle(new Vector2(128, 224)),
+                    new Obstacle(new Vector2(224, 224)),
+                    new Obstacle(new Vector2(0, 288)),
+                    new Obstacle(new Vector2(288, 288)),
+                    new Obstacle(new Vector2(32, 384)),
+                    new Obstacle(new Vector2(256, 384)),
+                    new Obstacle(new Vector2(-128, 448)),
+                    new Obstacle(new Vector2(128, 448)),
+                    new Obstacle(new Vector2(0, 512)),
+                    new Obstacle(new Vector2(224, 512)),
+                    new Obstacle(new Vector2(416, 512)),
+                    new Obstacle(new Vector2(-96, 576)),
+                    new Obstacle(new Vector2(128, 576)),
+                    new Obstacle(new Vector2(352, 576)),
+                    new Obstacle(new Vector2(-64, 640)),
+                    new Obstacle(new Vector2(352, 640)),
+                };
+            }
             else
                 return new List<Obstacle>();
         }
