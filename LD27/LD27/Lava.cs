@@ -44,7 +44,7 @@ namespace LD27
         Vector2 velocity = new Vector2(0, 90);
 
         Rectangle topSource;
-        Vector2 topPosition;
+        public Vector2 TopPosition;
 
         Rectangle bottomSource;
         Vector2 bottomPosition;
@@ -54,13 +54,13 @@ namespace LD27
 
         public Lava()
         {
-            topPosition = new Vector2(0, 800);
+            TopPosition = new Vector2(0, 800);
             bottomPosition = new Vector2(0, 1000);
         }
 
         public void Initialize()
         {
-            topPosition = new Vector2(0, 800);
+            TopPosition = new Vector2(0, 800);
             bottomPosition = new Vector2(0, 1000);
             Finished = false;
         }
@@ -78,9 +78,9 @@ namespace LD27
         {
             this.AnimateTop();
             this.AnimateBottom();
-            if (topPosition.Y > -195)
+            if (TopPosition.Y > -195)
             {
-                topPosition.Y -= velocity.Y * (float)theGameTime.TotalSeconds;
+                TopPosition.Y -= velocity.Y * (float)theGameTime.TotalSeconds;
             }
             if (bottomPosition.Y > 5)
             {
@@ -132,7 +132,7 @@ namespace LD27
 
         public void Draw(SpriteBatch theSpriteBatch)
         {
-            theSpriteBatch.Draw(top, topPosition, topSource, Color.White);
+            theSpriteBatch.Draw(top, TopPosition, topSource, Color.White);
             theSpriteBatch.Draw(bottom, bottomPosition, bottomSource, Color.White);
         }
     }

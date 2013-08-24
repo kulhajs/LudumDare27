@@ -103,7 +103,7 @@ namespace LD27
                     }
                 }
             }
-            else if (currentGameState == GameState.LevelCompleted)
+            else if (currentGameState == GameState.LevelCompleted || currentGameState == GameState.LevelFailed)
             {
                 tc = TouchPanel.GetState();
                 if (tc.Count > 0)
@@ -113,7 +113,7 @@ namespace LD27
                         if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450 && tl.Position != oldTouchPosition)
                         {
                             oldTouchPosition = tl.Position;
-                            levelHandler.CurrentLevelId += 1;
+                            if (currentGameState == GameState.LevelCompleted) levelHandler.CurrentLevelId += 1;
                             levelHandler.InitializeLevel();
                             lava.Initialize();
                             player.Initialize();
@@ -123,17 +123,16 @@ namespace LD27
                     }
                 }
             }
-            
+                        
             if (currentGameState == GameState.Running)
             {
-                if (player.Y > 50)
+                if (player.Y - lava.TopPosition.Y > 100)
                 {
-                    player.Update(TargetElapsedTime);
+                    currentGameState = GameState.LevelFailed;
                 }
-                if (lava.Finished)
-                {
-                    currentGameState = GameState.LevelCompleted;
-                }
+
+                if (player.Y > -110) player.Update(TargetElapsedTime); else currentGameState = GameState.LevelCompleted;
+
             }
             if (currentGameState != GameState.StartMenu)
             {
@@ -161,7 +160,7 @@ namespace LD27
             }
             else if (currentGameState == GameState.LevelFailed)
             {
-                spriteBatch.DrawString(font20, "TAP TO TRY AGAIN", new Vector2(60, 400), Color.Black);
+                spriteBatch.DrawString(font20, "TAP TO TRY AGAIN", new Vector2(70, 400), Color.Black);
             }
 
             spriteBatch.End();
