@@ -69,6 +69,7 @@
     <Compile Include="CollisionHandler.cs" />
     <Compile Include="Lava.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="LevelHandler.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Obstacles.cs" />
     <Compile Include="Player.cs" />

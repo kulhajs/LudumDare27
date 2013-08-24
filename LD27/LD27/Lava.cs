@@ -21,6 +21,8 @@ namespace LD27
         int topCurrentFrame = 0;
         int bottomCurrentFrame = 0;
 
+        public bool Finished { get; set; }
+
         Rectangle[] topSources = new Rectangle[] {
             new Rectangle(0, 0, 480, 200),
             new Rectangle(0, 200, 480, 200), 
@@ -56,6 +58,13 @@ namespace LD27
             bottomPosition = new Vector2(0, 1000);
         }
 
+        public void Initialize()
+        {
+            topPosition = new Vector2(0, 800);
+            bottomPosition = new Vector2(0, 1000);
+            Finished = false;
+        }
+
         public void LoadContent(ContentManager theContentManager)
         {
             top = theContentManager.Load<Texture2D>(top_asset);
@@ -76,6 +85,10 @@ namespace LD27
             if (bottomPosition.Y > 5)
             {
                 bottomPosition.Y -= velocity.Y * (float)theGameTime.TotalSeconds;
+            }
+            else
+            {
+                Finished = true;
             }
         }
 

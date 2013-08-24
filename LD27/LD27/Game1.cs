@@ -31,11 +31,13 @@ namespace LD27
         SpriteFont font30;
         SpriteFont font20;
 
-        Level level;
+        LevelHandler levelHandler;
         Player player;
         Lava lava;
 
         TouchCollection tc;
+
+        Vector2 oldTouchPosition;
 
         GameState currentGameState = GameState.StartMenu;
 
@@ -57,12 +59,14 @@ namespace LD27
 
         protected override void Initialize()
         {
-            level = new Level(3);
+            levelHandler = new LevelHandler(Content);
+            levelHandler.InitializeLevel();
             player = new Player()
             {
-                CurrentLevel = level
+                CurrentLevel = levelHandler.CurrentLevel
             };
             lava = new Lava();
+
 
             base.Initialize();
         }
@@ -72,7 +76,6 @@ namespace LD27
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            level.LoadContent(Content);
             player.LoadContent(Content);
             lava.LoadContent(Content);
 
@@ -92,16 +95,42 @@ namespace LD27
                 {
                     foreach (TouchLocation tl in tc)
                     {
-                        if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450)
+                        if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450 && tl.Position != oldTouchPosition)
+                        {
+                            oldTouchPosition = tl.Position;
                             currentGameState = GameState.Running;
+                        }
                     }
                 }
             }
-
+            else if (currentGameState == GameState.LevelCompleted)
+            {
+                tc = TouchPanel.GetState();
+                if (tc.Count > 0)
+                {
+                    foreach (TouchLocation tl in tc)
+                    {
+                        if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450 && tl.Position != oldTouchPosition)
+                        {
+                            oldTouchPosition = tl.Position;
+                            levelHandler.CurrentLevelId += 1;
+                            levelHandler.InitializeLevel();
+                            lava.Initialize();
+                            player.Initialize();
+                            player.CurrentLevel = levelHandler.CurrentLevel;
+                            currentGameState = GameState.StartMenu;
+                        }
+                    }
+                }
+            }
+            
             if (currentGameState == GameState.Running)
             {
-                player.Update(TargetElapsedTime);
-                if (player.Y < 50)
+                if (player.Y > 50)
+                {
+                    player.Update(TargetElapsedTime);
+                }
+                if (lava.Finished)
                 {
                     currentGameState = GameState.LevelCompleted;
                 }
@@ -119,7 +148,7 @@ namespace LD27
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            level.Draw(this.spriteBatch);
+            levelHandler.DrawLevel(this.spriteBatch);
             player.Draw(this.spriteBatch);
             lava.Draw(this.spriteBatch);
             if (currentGameState == GameState.StartMenu)
