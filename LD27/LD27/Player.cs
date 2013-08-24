@@ -23,6 +23,8 @@ namespace LD27
         private Vector2 acceleration = Vector2.Zero;
         private Vector2 velocity = new Vector2(2f, 2f);
 
+        float accelerationY = -45f;
+
         public bool Freeze { get; set; }
         
         public Player()
@@ -62,7 +64,7 @@ namespace LD27
             }
             if (!CollisionHandler.IsVerticalCollision(new Rectangle((int)this.X - 5, (int)this.Y - 10, 10, 20), CurrentLevel.LevelObstacles))
             {
-                this.Position.Y += velocity.Y * -45f * (float)theGameTime.TotalSeconds;
+                this.Position.Y += velocity.Y * accelerationY * (float)theGameTime.TotalSeconds;
             }
         }
 

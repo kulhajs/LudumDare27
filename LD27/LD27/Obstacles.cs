@@ -50,6 +50,7 @@ namespace LD27
             {
                 return new List<Obstacle>(){
                     new Obstacle(new Vector2(-64, 96)),
+                    new Obstacle(new Vector2(160, 96)),
                     new Obstacle(new Vector2(352, 96)),
                     new Obstacle(new Vector2(96, 160)),
                     new Obstacle(new Vector2(352, 192)),
@@ -78,7 +79,7 @@ namespace LD27
                     new Obstacle(new Vector2(416, 64)),
                     new Obstacle(new Vector2(0, 128)),
                     new Obstacle(new Vector2(288, 128)),
-                    new Obstacle(new Vector2(64, 224)),
+                    new Obstacle(new Vector2(-96, 224)),
                     new Obstacle(new Vector2(128, 224)),
                     new Obstacle(new Vector2(224, 224)),
                     new Obstacle(new Vector2(0, 288)),
