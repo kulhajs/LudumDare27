@@ -1,0 +1,7 @@
+*.txt
+*.cachefile
+LD27/LD27/Properties/
+LD27/LD27/bin/Windows Phone/Debug/AppManifest.xaml
+LD27/LD27/bin/
+LD27/LD27/obj/
+LD27/LD27Content/obj/
