@@ -13,7 +13,7 @@ namespace LD27
         Texture2D top;
         Texture2D bottom;
 
-        const int animationLength = 200;
+        const int animationLength = 16;
         int currentFrame = 0;
 
         Rectangle[] topSources = new Rectangle[] {
@@ -23,7 +23,7 @@ namespace LD27
             new Rectangle(0, 600, 480, 200)
         };
 
-        Vector2 velocity = new Vector2(0, 100);
+        Vector2 velocity = new Vector2(0, 90);
 
         Rectangle topSource;
         Vector2 topPosition;

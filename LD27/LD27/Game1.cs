@@ -42,7 +42,7 @@ namespace LD27
 
         protected override void Initialize()
         {
-            level = new Level(Content);
+            level = new Level(2);
             player = new Player();
             lava = new Lava();
 
@@ -54,7 +54,7 @@ namespace LD27
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            level.LoadContent();
+            level.LoadContent(Content);
             player.LoadContent(Content);
             lava.LoadContent(Content);
         }

@@ -20,7 +20,7 @@ namespace LD27
 
         public void LoadContent(ContentManager theContentManager)
         {
-            base.LoadContent(theContentManager, assetNames[0]);
+            base.LoadContent(theContentManager, assetNames[random.Next(assetNames.Length)]);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
