@@ -12,17 +12,32 @@ using Microsoft.Xna.Framework.Media;
 
 namespace LD27
 {
+    enum GameState { 
+        StartMenu,
+        Running,
+        LevelCompleted,
+        LevelFailed
+    };
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
+    /// 
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        SpriteFont font30;
+        SpriteFont font20;
+
         Level level;
         Player player;
         Lava lava;
+
+        TouchCollection tc;
+
+        GameState currentGameState = GameState.StartMenu;
 
         public Game1()
         {
@@ -42,8 +57,11 @@ namespace LD27
 
         protected override void Initialize()
         {
-            level = new Level(2);
-            player = new Player();
+            level = new Level(3);
+            player = new Player()
+            {
+                CurrentLevel = level
+            };
             lava = new Lava();
 
             base.Initialize();
@@ -57,6 +75,9 @@ namespace LD27
             level.LoadContent(Content);
             player.LoadContent(Content);
             lava.LoadContent(Content);
+
+            font30 = Content.Load<SpriteFont>("Fonts/font_30");
+            font20 = Content.Load<SpriteFont>("Fonts/font_20");
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,8 +85,31 @@ namespace LD27
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            player.Update(TargetElapsedTime);
-            lava.Update(TargetElapsedTime);
+            if (currentGameState == GameState.StartMenu)
+            {
+                tc = TouchPanel.GetState();
+                if (tc.Count > 0)
+                {
+                    foreach (TouchLocation tl in tc)
+                    {
+                        if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450)
+                            currentGameState = GameState.Running;
+                    }
+                }
+            }
+
+            if (currentGameState == GameState.Running)
+            {
+                player.Update(TargetElapsedTime);
+                if (player.Y < 50)
+                {
+                    currentGameState = GameState.LevelCompleted;
+                }
+            }
+            if (currentGameState != GameState.StartMenu)
+            {
+                lava.Update(TargetElapsedTime);
+            }
 
             base.Update(gameTime);
         }
@@ -78,6 +122,19 @@ namespace LD27
             level.Draw(this.spriteBatch);
             player.Draw(this.spriteBatch);
             lava.Draw(this.spriteBatch);
+            if (currentGameState == GameState.StartMenu)
+            {
+                spriteBatch.DrawString(font30, "TAP TO START", new Vector2(50, 400), Color.Black);
+            }
+            else if (currentGameState == GameState.LevelCompleted)
+            {
+                spriteBatch.DrawString(font20, "TAP FOR NEXT LEVEL", new Vector2(50, 400), Color.Black);
+            }
+            else if (currentGameState == GameState.LevelFailed)
+            {
+                spriteBatch.DrawString(font20, "TAP TO TRY AGAIN", new Vector2(60, 400), Color.Black);
+            }
+
             spriteBatch.End();
 
 

@@ -12,7 +12,7 @@ namespace LD27
     class Level
     {
         Background background;
-        List<Obstacle> obstacles = new List<Obstacle>();
+        public List<Obstacle> LevelObstacles = new List<Obstacle>();
 
         int currentLevel;
 
@@ -26,7 +26,7 @@ namespace LD27
         {
             this.LoadObstacles();
             background.LoadContent(contentManager);
-            foreach (Obstacle o in obstacles)
+            foreach (Obstacle o in LevelObstacles)
             {
                 o.LoadContent(contentManager);
             }
@@ -34,16 +34,16 @@ namespace LD27
 
         private void LoadObstacles()
         {
-            if (obstacles.Count > 0)
-                obstacles.Clear();
+            if (LevelObstacles.Count > 0)
+                LevelObstacles.Clear();
 
-            obstacles = Obstacles.LevelObstacles(currentLevel);
+            LevelObstacles = Obstacles.LevelObstacles(currentLevel);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
         {
             background.Draw(theSpriteBatch);
-            foreach (Obstacle o in obstacles)
+            foreach (Obstacle o in LevelObstacles)
             {
                 o.Draw(theSpriteBatch);
             }

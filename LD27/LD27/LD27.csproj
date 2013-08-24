@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="CollisionHandler.cs" />
     <Compile Include="Lava.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Obstacle.cs" />
