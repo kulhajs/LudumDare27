@@ -22,6 +22,7 @@ namespace LD27
 
         Level level;
         Player player;
+        Lava lava;
 
         public Game1()
         {
@@ -43,6 +44,7 @@ namespace LD27
         {
             level = new Level(Content);
             player = new Player();
+            lava = new Lava();
 
             base.Initialize();
         }
@@ -54,6 +56,7 @@ namespace LD27
             spriteBatch = new SpriteBatch(GraphicsDevice);
             level.LoadContent();
             player.LoadContent(Content);
+            lava.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -61,6 +64,8 @@ namespace LD27
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            player.Update(TargetElapsedTime);
+            lava.Update(TargetElapsedTime);
 
             base.Update(gameTime);
         }
@@ -72,6 +77,7 @@ namespace LD27
             spriteBatch.Begin();
             level.Draw(this.spriteBatch);
             player.Draw(this.spriteBatch);
+            lava.Draw(this.spriteBatch);
             spriteBatch.End();
 
 
