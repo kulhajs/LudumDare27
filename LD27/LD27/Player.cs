@@ -20,6 +20,12 @@ namespace LD27
         private const int w = 24;
         private const int h = 24;
 
+        public bool InTrap { get; set; }
+
+        float radius;
+        Vector2 center;
+        int angle = 0;
+
         private Vector2 acceleration = Vector2.Zero;
         private Vector2 velocity = new Vector2(2f, 2f);
 
@@ -29,6 +35,8 @@ namespace LD27
         
         public Player()
         {
+            this.InTrap = false;
+            this.Color = Color.White;
             this.Position = new Vector2(480 / 2 - w / 2, 750); //yay magic numbers
             accelerometer = new Accelerometer();
             accelerometer.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<AccelerometerReading>>(accelerometer_CurrentValueChanged);
@@ -38,6 +46,7 @@ namespace LD27
 
         public void Initialize()
         {
+            this.InTrap = false;
             this.Position = new Vector2(480 / 2 - w / 2, 750);
         }
 
@@ -48,24 +57,50 @@ namespace LD27
 
         public void Update(TimeSpan theGameTime)
         {
-            if (acceleration.X < 0)
+            if (!InTrap)
             {
-                if (!CollisionHandler.IsLeftHorizontalCollision(new Rectangle((int)this.X - 10, (int)this.Y - 5, 20, 10), CurrentLevel.LevelObstacles))
+                if (acceleration.X < 0)
                 {
-                    this.Position.X += velocity.X * acceleration.X * (float)theGameTime.TotalSeconds;
+                    if (!CollisionHandler.IsLeftHorizontalCollision(new Rectangle((int)this.X - 10, (int)this.Y - 5, 20, 10), CurrentLevel.LevelObstacles))
+                    {
+                        this.Position.X += velocity.X * acceleration.X * (float)theGameTime.TotalSeconds;
+                    }
+                }
+                else
+                {
+                    if (!CollisionHandler.IsRightHorizontalCollision(new Rectangle((int)this.X - 10, (int)this.Y - 5, 20, 10), CurrentLevel.LevelObstacles))
+                    {
+                        this.Position.X += velocity.X * acceleration.X * (float)theGameTime.TotalSeconds;
+                    }
+                }
+                if (!CollisionHandler.IsVerticalCollision(new Rectangle((int)this.X - 5, (int)this.Y - 10, 10, 20), CurrentLevel.LevelObstacles))
+                {
+                    this.Position.Y += velocity.Y * accelerationY * (float)theGameTime.TotalSeconds;
+                }
+
+                center = CollisionHandler.TrapCollisions(this.Position, CurrentLevel.LevelTraps);
+                if (center != Vector2.Zero)
+                {
+                    radius = (this.Position - center).Length();
+                    InTrap = true;
                 }
             }
             else
             {
-                if (!CollisionHandler.IsRightHorizontalCollision(new Rectangle((int)this.X - 10, (int)this.Y - 5, 20, 10), CurrentLevel.LevelObstacles))
-                {
-                    this.Position.X += velocity.X * acceleration.X * (float)theGameTime.TotalSeconds;
-                }
+                Fall();
             }
-            if (!CollisionHandler.IsVerticalCollision(new Rectangle((int)this.X - 5, (int)this.Y - 10, 10, 20), CurrentLevel.LevelObstacles))
+        }
+
+        private void Fall()
+        {
+            if (radius > 0)
             {
-                this.Position.Y += velocity.Y * accelerationY * (float)theGameTime.TotalSeconds;
+                this.X = radius * Fcos(angle * FPI / 180f) + center.X;
+                this.Y = radius * Fsin(angle * FPI / 180f) + center.Y;
             }
+
+            radius *= 0.975f;
+            angle += 20;
         }
 
         private void accelerometer_CurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)
@@ -75,7 +110,7 @@ namespace LD27
 
         public void Draw(SpriteBatch theSpriteBatch)
         {
-            base.Draw(theSpriteBatch, new Vector2(this.texture.Width / 2, this.texture.Height / 2), this.Position, Color.White, this.Rotation);
+            base.Draw(theSpriteBatch, new Vector2(this.texture.Width / 2, this.texture.Height / 2), this.Position, this.Color, this.Rotation);
         }
     }
 }

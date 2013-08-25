@@ -16,7 +16,8 @@ namespace LD27
         StartMenu,
         Running,
         LevelCompleted,
-        LevelFailed
+        LevelFailed,
+        Completed
     };
 
     /// <summary>
@@ -103,6 +104,10 @@ namespace LD27
                     }
                 }
             }
+            else if (currentGameState == GameState.LevelCompleted && levelHandler.CurrentLevelId == 5)
+            {
+                currentGameState = GameState.Completed;
+            }
             else if (currentGameState == GameState.LevelCompleted || currentGameState == GameState.LevelFailed)
             {
                 tc = TouchPanel.GetState();
@@ -152,15 +157,19 @@ namespace LD27
             lava.Draw(this.spriteBatch);
             if (currentGameState == GameState.StartMenu)
             {
-                spriteBatch.DrawString(font30, "TAP TO START", new Vector2(50, 400), Color.Black);
+                spriteBatch.DrawString(font30, "TAP TO START", new Vector2((480 - font30.MeasureString("TAP TO START").X) / 2, 400), Color.Black);
             }
             else if (currentGameState == GameState.LevelCompleted)
             {
-                spriteBatch.DrawString(font20, "TAP FOR NEXT LEVEL", new Vector2(50, 400), Color.Black);
+                spriteBatch.DrawString(font20, "TAP FOR NEXT LEVEL", new Vector2((480 - font20.MeasureString("TAP FOR NEXT LEVEL").X) / 2, 400), Color.Black);
             }
             else if (currentGameState == GameState.LevelFailed)
             {
-                spriteBatch.DrawString(font20, "TAP TO TRY AGAIN", new Vector2(70, 400), Color.Black);
+                spriteBatch.DrawString(font20, "TAP TO TRY AGAIN", new Vector2((480 - font20.MeasureString("TAP TO TRY AGAIN").X) / 2, 400), Color.Black);
+            }
+            else if (currentGameState == GameState.Completed)
+            { 
+                spriteBatch.DrawString(font20, "YOU'RE VICTORIOUS!", new Vector2((480 - font20.MeasureString("YOU'RE VICTORIOUS!").X) / 2, 400), Color.Black);
             }
 
             spriteBatch.End();

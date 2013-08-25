@@ -64,5 +64,17 @@ namespace LD27
         {
             theSpriteBatch.Draw(texture, Position, Source, color, rotation, origin, Scale, SpriteEffects.None, 0);
         }
+
+        public float Fcos(float x)
+        {
+            return (float)Math.Cos((double)x);
+        }
+
+        public float Fsin(float x)
+        {
+            return (float)Math.Sin((double)x);
+        }
+
+        public float FPI { get { return (float)Math.PI; } }
     }
 }

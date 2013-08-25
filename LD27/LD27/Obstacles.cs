@@ -98,8 +98,100 @@ namespace LD27
                     new Obstacle(new Vector2(352, 640)),
                 };
             }
+            else if (level == 5)
+            {
+                return new List<Obstacle>(){
+                    new Obstacle(new Vector2(-96, 96)),
+                    new Obstacle(new Vector2(-64, 192)),
+                    new Obstacle(new Vector2(128, 96)),
+                    new Obstacle(new Vector2(384, 96)),
+                    new Obstacle(new Vector2(352, 192)),
+                    new Obstacle(new Vector2(64, 256)),
+                    new Obstacle(new Vector2(288, 256)),
+                    new Obstacle(new Vector2(192, 320)),
+                    new Obstacle(new Vector2(256, 320)),
+                    new Obstacle(new Vector2(0, 384)),
+                    new Obstacle(new Vector2(416, 384)),
+                    new Obstacle(new Vector2(-128, 448)),
+                    new Obstacle(new Vector2(160, 448)),
+                    new Obstacle(new Vector2(384, 448)),
+                    new Obstacle(new Vector2(32, 512)),
+                    new Obstacle(new Vector2(288, 512)),
+                    new Obstacle(new Vector2(0, 608)),
+                    new Obstacle(new Vector2(160, 608)),
+                    new Obstacle(new Vector2(416, 608)),
+                };
+            }
             else
                 return new List<Obstacle>();
+        }
+
+        public static List<Trap> LevelTraps(int level)
+        {
+            if (level == 1)
+            {
+                return new List<Trap>() {
+                    new Trap(new Vector2(160, 128)),
+                    new Trap(new Vector2(288, 256)),
+                    new Trap(new Vector2(160, 352)),
+                    new Trap(new Vector2(160, 480)),
+                    new Trap(new Vector2(352, 480)),
+                };
+            }
+            else if (level == 2)
+            {
+                return new List<Trap>(){
+                    new Trap(new Vector2(192, 96)),
+                    new Trap(new Vector2(288, 96)),
+                    new Trap(new Vector2(32, 160)),
+                    new Trap(new Vector2(256, 256)),
+                    new Trap(new Vector2(160, 416)),
+                    new Trap(new Vector2(96, 512)),
+                    new Trap(new Vector2(256, 512)),
+                };
+            }
+            else if (level == 3)
+            {
+                return new List<Trap>(){
+                    new Trap(new Vector2(320, 192)),
+                    new Trap(new Vector2(288, 320)),
+                    new Trap(new Vector2(128, 384)),
+                    new Trap(new Vector2(256, 448)),
+                    new Trap(new Vector2(128, 544)),
+                    new Trap(new Vector2(256, 544)),
+                };
+            }
+            else if (level == 4)
+            {
+                return new List<Trap>(){
+                    new Trap(new Vector2(256, 128)),
+                    new Trap(new Vector2(160, 192)),
+                    new Trap(new Vector2(224, 320)),
+                    new Trap(new Vector2( 96, 448)),
+                    new Trap(new Vector2(352, 448)),
+                };
+            }
+            else if (level == 5)
+            {
+                return new List<Trap>(){
+                    new Trap(new Vector2(128, 160)),
+                    new Trap(new Vector2(352, 128)),
+                    new Trap(new Vector2(256, 192)),
+                    new Trap(new Vector2(288, 224)),
+                    new Trap(new Vector2( 32, 288)),
+                    new Trap(new Vector2( 96, 352)),
+                    new Trap(new Vector2(288, 384)),
+                    new Trap(new Vector2(224, 416)),
+                    new Trap(new Vector2(352, 416)),
+                    new Trap(new Vector2(128, 448)),
+                    new Trap(new Vector2( 96, 480)),
+                    new Trap(new Vector2(256, 512)),
+                    new Trap(new Vector2(320, 576)),
+                    new Trap(new Vector2(384, 640)),
+                };
+            }
+            else
+                return new List<Trap>();
         }
     }
 }

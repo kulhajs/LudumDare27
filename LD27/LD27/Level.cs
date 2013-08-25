@@ -13,8 +13,11 @@ namespace LD27
     {
         Background background;
         public List<Obstacle> LevelObstacles = new List<Obstacle>();
+        public List<Trap> LevelTraps = new List<Trap>();
 
         int currentLevel;
+
+        Random random = new Random();
 
         public Level(int level)
         {
@@ -25,11 +28,24 @@ namespace LD27
         public void LoadContent(ContentManager contentManager)
         {
             this.LoadObstacles();
+            this.LoadTraps();
             background.LoadContent(contentManager);
             foreach (Obstacle o in LevelObstacles)
             {
                 o.LoadContent(contentManager);
             }
+            foreach (Trap t in LevelTraps)
+            {
+                t.LoadContent(contentManager);
+            }
+        }
+
+        private void LoadTraps()
+        {
+            if (LevelTraps.Count > 0)
+                LevelTraps.Clear();
+
+            LevelTraps = Obstacles.LevelTraps(currentLevel);
         }
 
         private void LoadObstacles()
@@ -46,6 +62,10 @@ namespace LD27
             foreach (Obstacle o in LevelObstacles)
             {
                 o.Draw(theSpriteBatch);
+            }
+            foreach (Trap t in LevelTraps)
+            {
+                t.Draw(theSpriteBatch);
             }
         }
     }

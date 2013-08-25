@@ -45,5 +45,15 @@ namespace LD27
 
             return false;
         }
+
+        public static Vector2 TrapCollisions(Vector2 playerPosition, List<Trap> traps)
+        {
+            foreach (Trap trap in traps)
+            {
+                if ((playerPosition - trap.Position).LengthSquared() < 300)
+                    return trap.Position;
+            }
+            return Vector2.Zero;
+        }
     }
 }
