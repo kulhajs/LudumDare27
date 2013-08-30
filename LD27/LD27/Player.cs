@@ -84,6 +84,11 @@ namespace LD27
                     radius = (this.Position - center).Length();
                     InTrap = true;
                 }
+
+                if (X < 11)
+                    X = 11;
+                if (X > 480 - 11)
+                    X = 480 - 11;
             }
             else
             {

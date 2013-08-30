@@ -96,7 +96,7 @@ namespace LD27
                 {
                     foreach (TouchLocation tl in tc)
                     {
-                        if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450 && tl.Position != oldTouchPosition)
+                        if (tl.Position != oldTouchPosition)
                         {
                             oldTouchPosition = tl.Position;
                             currentGameState = GameState.Running;
@@ -115,7 +115,7 @@ namespace LD27
                 {
                     foreach (TouchLocation tl in tc)
                     {
-                        if (tl.Position.X > 50 && tl.Position.X < 430 && tl.Position.Y > 400 && tl.Position.Y < 450 && tl.Position != oldTouchPosition)
+                        if (tl.Position != oldTouchPosition)
                         {
                             oldTouchPosition = tl.Position;
                             if (currentGameState == GameState.LevelCompleted) levelHandler.CurrentLevelId += 1;
