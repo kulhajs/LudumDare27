@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Phone.Info;
 
 namespace LD27
 {
@@ -31,6 +32,7 @@ namespace LD27
 
         SpriteFont font30;
         SpriteFont font20;
+        SpriteFont font10;
 
         LevelHandler levelHandler;
         Player player;
@@ -41,6 +43,8 @@ namespace LD27
         Vector2 oldTouchPosition;
 
         GameState currentGameState = GameState.StartMenu;
+
+        float totalTime = 0.0f;
 
         public Game1()
         {
@@ -82,6 +86,7 @@ namespace LD27
 
             font30 = Content.Load<SpriteFont>("Fonts/font_30");
             font20 = Content.Load<SpriteFont>("Fonts/font_20");
+            font10 = Content.Load<SpriteFont>("Fonts/font_10");
         }
 
         protected override void Update(GameTime gameTime)
@@ -131,6 +136,9 @@ namespace LD27
                         
             if (currentGameState == GameState.Running)
             {
+
+                totalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
                 if (player.Y - lava.TopPosition.Y > 100)
                 {
                     currentGameState = GameState.LevelFailed;
@@ -155,6 +163,7 @@ namespace LD27
             levelHandler.DrawLevel(this.spriteBatch);
             player.Draw(this.spriteBatch);
             lava.Draw(this.spriteBatch);
+
             if (currentGameState == GameState.StartMenu)
             {
                 spriteBatch.DrawString(font30, "TAP TO START", new Vector2((480 - font30.MeasureString("TAP TO START").X) / 2, 400), Color.Black);
@@ -172,8 +181,9 @@ namespace LD27
                 spriteBatch.DrawString(font20, "YOU'RE VICTORIOUS!", new Vector2((480 - font20.MeasureString("YOU'RE VICTORIOUS!").X) / 2, 400), Color.Black);
             }
 
-            spriteBatch.End();
+            spriteBatch.DrawString(font10, "Elapsed time: " + totalTime.ToString("0.00"), new Vector2(15, 770), Color.Black);
 
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
