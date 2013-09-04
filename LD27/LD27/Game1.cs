@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Phone.Info;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace LD27
 {
@@ -46,6 +47,13 @@ namespace LD27
 
         float totalTime = 0.0f;
 
+        string deviceId = string.Empty;
+
+        bool scoreSaved = false;
+
+        public static MobileServiceClient MobileService = new MobileServiceClient("https://sotmj.azure-mobile.net/", "RALRKzZdaIXXvUDqGiszKRDsIBCGAm44");
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -54,7 +62,9 @@ namespace LD27
             graphics.IsFullScreen = true;
             graphics.SupportedOrientations = DisplayOrientation.Portrait;
             Content.RootDirectory = "Content";
-
+            
+            deviceId = Convert.ToBase64String((byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId"));
+  
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
 
@@ -112,6 +122,11 @@ namespace LD27
             else if (currentGameState == GameState.LevelCompleted && levelHandler.CurrentLevelId == 5)
             {
                 currentGameState = GameState.Completed;
+                if(!scoreSaved)
+                {
+                    ScoreHandler.SaveScore(deviceId, totalTime);
+                    scoreSaved = true;
+                }
             }
             else if (currentGameState == GameState.LevelCompleted || currentGameState == GameState.LevelFailed)
             {
