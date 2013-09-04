@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Phone.Info;
 using Microsoft.WindowsAzure.MobileServices;
+using System.Threading;
 
 namespace LD27
 {
@@ -45,6 +46,8 @@ namespace LD27
 
         GameState currentGameState = GameState.StartMenu;
 
+        Thread saveScoreThread;
+
         float totalTime = 0.0f;
 
         string deviceId = string.Empty;
@@ -62,7 +65,7 @@ namespace LD27
             graphics.IsFullScreen = true;
             graphics.SupportedOrientations = DisplayOrientation.Portrait;
             Content.RootDirectory = "Content";
-            
+
             deviceId = Convert.ToBase64String((byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId"));
   
             // Frame rate is 30 fps by default for Windows Phone.
@@ -124,8 +127,8 @@ namespace LD27
                 currentGameState = GameState.Completed;
                 if(!scoreSaved)
                 {
-                    ScoreHandler.SaveScore(deviceId, totalTime);
-                    scoreSaved = true;
+                    saveScoreThread = new Thread(SaveScoreThread);
+                    saveScoreThread.Start();
                 }
             }
             else if (currentGameState == GameState.LevelCompleted || currentGameState == GameState.LevelFailed)
@@ -201,6 +204,18 @@ namespace LD27
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void SaveScoreThread()
+        {
+
+            if (!scoreSaved)
+            {
+                ScoreHandler.SaveScore(deviceId, totalTime);
+                scoreSaved = true;
+                saveScoreThread = null;
+            }
+
         }
     }
 }

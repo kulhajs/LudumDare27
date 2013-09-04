@@ -6,3 +6,4 @@ LD27/LD27/bin/
 LD27/LD27/obj/
 LD27/LD27Content/obj/
 packages/
+.nuget/
