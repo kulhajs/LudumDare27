@@ -12,6 +12,10 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Phone.Info;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Threading;
+using Microsoft.Phone.Notification;
+using System.Windows.Threading;
+using System.Windows;
+using Microsoft.Phone.Shell;
 
 namespace LD27
 {
@@ -56,6 +60,34 @@ namespace LD27
 
         public static MobileServiceClient MobileService = new MobileServiceClient("https://sotmj.azure-mobile.net/", "RALRKzZdaIXXvUDqGiszKRDsIBCGAm44");
 
+        public static HttpNotificationChannel CurrentChannel { get; set; }
+
+        private static void AcquirePushChannel()
+        {
+            CurrentChannel = HttpNotificationChannel.Find("MyPushChannel");
+
+            CurrentChannel.ShellToastNotificationReceived += CurrentChannel_ShellToastNotificationReceived;
+
+            if(CurrentChannel == null)
+            {
+                CurrentChannel = new HttpNotificationChannel("MyPushChannel");
+
+                CurrentChannel.ShellToastNotificationReceived += CurrentChannel_ShellToastNotificationReceived;
+
+                CurrentChannel.Open();
+                CurrentChannel.BindToShellToast();
+            }
+        }
+
+        private static void CurrentChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
+        {
+            ShellToast toast = new ShellToast();
+            toast.Title = e.Collection["wp:Text1"];
+            toast.Content = e.Collection["wp:text2"];
+            toast.Show();
+
+            int i = 5;
+        }
 
         public Game1()
         {
@@ -67,6 +99,7 @@ namespace LD27
             Content.RootDirectory = "Content";
 
             deviceId = Convert.ToBase64String((byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId"));
+            AcquirePushChannel();
   
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
@@ -130,6 +163,8 @@ namespace LD27
                     saveScoreThread = new Thread(SaveScoreThread);
                     saveScoreThread.Start();
                 }
+
+                ScoreHandler.LoadScore(deviceId, totalTime);
             }
             else if (currentGameState == GameState.LevelCompleted || currentGameState == GameState.LevelFailed)
             {
@@ -213,7 +248,6 @@ namespace LD27
             {
                 ScoreHandler.SaveScore(deviceId, totalTime);
                 scoreSaved = true;
-                saveScoreThread = null;
             }
 
         }
