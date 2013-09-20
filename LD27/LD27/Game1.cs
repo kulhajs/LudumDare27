@@ -16,6 +16,7 @@ using Microsoft.Phone.Notification;
 using System.Windows.Threading;
 using System.Windows;
 using Microsoft.Phone.Shell;
+using System.Globalization;
 
 namespace LD27
 {
@@ -52,11 +53,23 @@ namespace LD27
 
         Thread saveScoreThread;
 
+        CultureInfo cultureInfo;
+
         float totalTime = 0.0f;
+
+        static string personalBest = string.Empty;
 
         string deviceId = string.Empty;
 
         bool scoreSaved = false;
+
+        static bool showBestTime = false;
+
+        static bool showNewRecordText = false;
+
+        static string bestTime = string.Empty;
+
+        static bool showPersonalBestTimeText = false;
 
         public static MobileServiceClient MobileService = new MobileServiceClient("https://sotmj.azure-mobile.net/", "RALRKzZdaIXXvUDqGiszKRDsIBCGAm44");
 
@@ -81,12 +94,20 @@ namespace LD27
 
         private static void CurrentChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
         {
-            ShellToast toast = new ShellToast();
-            toast.Title = e.Collection["wp:Text1"];
-            toast.Content = e.Collection["wp:text2"];
-            toast.Show();
-
-            int i = 5;
+            if (e.Collection["wp:Text1"].ToString() == "new_record")
+            {
+                showNewRecordText = true;
+            }
+            else if (e.Collection["wp:Text1"].ToString() == "show_personal_best")
+            {
+                showPersonalBestTimeText = true;
+                personalBest = e.Collection["wp:Text2"].ToString();
+            }
+            if(e.Collection["wp:Text1"].ToString() == "best_time")
+            {
+                showBestTime = true;
+                bestTime = float.Parse(e.Collection["wp:Text2"]).ToString("0.00", CultureInfo.CurrentCulture);
+            }
         }
 
         public Game1()
@@ -95,6 +116,7 @@ namespace LD27
             graphics.PreferredBackBufferWidth = 480;
             graphics.PreferredBackBufferHeight = 800;
             graphics.IsFullScreen = true;
+            cultureInfo = CultureInfo.InvariantCulture;
             graphics.SupportedOrientations = DisplayOrientation.Portrait;
             Content.RootDirectory = "Content";
 
@@ -234,7 +256,24 @@ namespace LD27
                 spriteBatch.DrawString(font20, "YOU'RE VICTORIOUS!", new Vector2((480 - font20.MeasureString("YOU'RE VICTORIOUS!").X) / 2, 400), Color.Black);
             }
 
-            spriteBatch.DrawString(font10, "Elapsed time: " + totalTime.ToString("0.00"), new Vector2(15, 770), Color.Black);
+            if(showBestTime)
+            {
+                string text = "WORLD RECORD IS: " + bestTime;
+                spriteBatch.DrawString(font20, text, new Vector2((480 - font20.MeasureString(text).X) / 2, 25), Color.Black);
+            }
+
+            if(showPersonalBestTimeText)
+            {
+                string text = "YOUR BEST TIME IS: " + float.Parse(personalBest).ToString("0.00", cultureInfo);
+                spriteBatch.DrawString(font10, text, new Vector2(80, 455), Color.Black);
+            }
+            else if (showNewRecordText)
+            {
+                string text = "YOU SET A NEW RECORD! " + totalTime.ToString("0.00", cultureInfo);
+                spriteBatch.DrawString(font10, text, new Vector2(50, 455), Color.Black);
+            }
+
+            spriteBatch.DrawString(font10, "Elapsed time: " + totalTime.ToString("0.00", cultureInfo), new Vector2(15, 770), Color.Black);
 
             spriteBatch.End();
 
@@ -243,13 +282,22 @@ namespace LD27
 
         private void SaveScoreThread()
         {
-
             if (!scoreSaved)
             {
                 ScoreHandler.SaveScore(deviceId, totalTime);
                 scoreSaved = true;
             }
+        }
 
+        private void NotificationThread()
+        {
+            int iddle = 1000;
+
+            while(true)
+            {
+                
+                Thread.Sleep(iddle);
+            }
         }
     }
 }
