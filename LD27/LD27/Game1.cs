@@ -77,13 +77,15 @@ namespace LD27
 
         private static void AcquirePushChannel()
         {
-            CurrentChannel = HttpNotificationChannel.Find("MyPushChannel");
+            CurrentChannel = HttpNotificationChannel.Find("RALRKzZdaIXXvUDqGiszKRDsIBCGAm44");
 
-            CurrentChannel.ShellToastNotificationReceived += CurrentChannel_ShellToastNotificationReceived;
-
-            if(CurrentChannel == null)
+            if (CurrentChannel != null)
             {
-                CurrentChannel = new HttpNotificationChannel("MyPushChannel");
+                CurrentChannel.ShellToastNotificationReceived += CurrentChannel_ShellToastNotificationReceived;
+            }
+            else
+            {
+                CurrentChannel = new HttpNotificationChannel("RALRKzZdaIXXvUDqGiszKRDsIBCGAm44");
 
                 CurrentChannel.ShellToastNotificationReceived += CurrentChannel_ShellToastNotificationReceived;
 
